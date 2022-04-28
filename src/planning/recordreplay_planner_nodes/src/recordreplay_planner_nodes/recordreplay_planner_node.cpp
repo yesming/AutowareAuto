@@ -44,6 +44,7 @@ RecordReplayPlannerNode::RecordReplayPlannerNode(const rclcpp::NodeOptions & nod
   m_goal_angle_threshold_rad = declare_parameter("goal_angle_threshold_rad").get<float32_t>();
   m_enable_loop = declare_parameter("loop_trajectory").get<bool>();
   m_max_loop_gap_m = declare_parameter("loop_max_gap_m").get<float64_t>();
+  m_recording_frame = declare_parameter("recording_frame").get<std::string>();
 
   using rclcpp::QoS;
   using namespace std::chrono_literals;
@@ -180,7 +181,7 @@ void RecordReplayPlannerNode::on_ego(const State::SharedPtr & msg)
   State msg_world = *msg;
   try {
     tf_map2odom = tf_buffer_->lookupTransform(
-      recording_frame, msg->header.frame_id,
+      m_recording_frame, msg->header.frame_id,
       tf2::TimePointZero);
   } catch (...) {
     // skip recording/replaying if tf failed to get a transform to world frame.
@@ -189,6 +190,8 @@ void RecordReplayPlannerNode::on_ego(const State::SharedPtr & msg)
       "Failed to transform ego pose to world frame.");
     return;
   }
+  motion::motion_common::doTransform(*msg, msg_world, tf_map2odom);
+  msg_world.header.frame_id = m_recording_frame;
 
   if (m_planner->is_recording()) {
     RCLCPP_INFO_ONCE(this->get_logger(), "Recording ego position");

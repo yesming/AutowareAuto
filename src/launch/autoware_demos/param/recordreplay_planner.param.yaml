@@ -8,3 +8,4 @@
     loop_trajectory: False
     loop_max_gap_m: 5.0
     skip_first_velocity: True
+    recording_frame: "map"

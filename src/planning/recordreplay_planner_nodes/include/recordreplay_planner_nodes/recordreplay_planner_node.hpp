@@ -131,7 +131,7 @@ private:
 
   float64_t m_goal_distance_threshold_m = {};
   float64_t m_goal_angle_threshold_rad;
-  std::string recording_frame = "map";
+  std::string m_recording_frame = "map";
 
   bool8_t m_enable_loop = false;
   float64_t m_max_loop_gap_m = 0.0;
