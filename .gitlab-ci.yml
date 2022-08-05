@@ -52,8 +52,8 @@ stages:
     - docker push $CI_REGISTRY_IMAGE/$ARCH/ade-$ROS_DISTRO:commit-$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE/$ARCH/ade-$ROS_DISTRO:$CI_COMMIT_REF_NAME
   after_script:
-    - docker container rm -f $(docker container ls --filter "status=exited" -q)
-    - docker image rm $(docker image ls -q)
+    - docker container prune -f
+    - docker image prune -a -f
   needs:
     - gen_ros_deps_foxy
 
@@ -91,7 +91,7 @@ stages:
 .gen_deps_base:
   stage: .pre
   script:
-    - apt-get update && apt-get install python3-vcstool
+    - apt-get update && apt-get install -y python3-vcstool python3-pip
     - vcs import < autoware.auto.$ROS_DISTRO.repos
     - rosdep update
     - rosdep install --as-root "apt:false pip:false" --simulate --reinstall --ignore-src -y --from-paths src | sort >> ros-deps
@@ -179,8 +179,8 @@ stages:
     - docker push $CI_REGISTRY_IMAGE/$ARCH/binary-$ROS_DISTRO:commit-$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE/$ARCH/binary-$ROS_DISTRO:$CI_COMMIT_REF_NAME
   after_script:
-    - docker container rm -f $(docker container ls --filter "status=exited" -q)
-    - docker image rm $(docker image ls -q)
+    - docker container prune -f
+    - docker image prune -a -f
 
 .arm64:
   variables:
@@ -215,7 +215,7 @@ build_amd64_foxy:
     - job: ade_amd64_foxy
 
 build_arm64_foxy:
-  extends: 
+  extends:
     - .arm64
     - .build_base
   needs:
@@ -231,7 +231,7 @@ test_amd64_foxy:
     - build_amd64_foxy
 
 test_arm64_foxy:
-  extends: 
+  extends:
     - .arm64
     - .test_base
   needs:
@@ -299,7 +299,7 @@ volume_amd64_foxy:
     - test_amd64_foxy
 
 volume_arm64_foxy:
-  extends: 
+  extends:
     - .arm64
     - .volume_base
   needs:

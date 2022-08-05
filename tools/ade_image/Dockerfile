@@ -1,4 +1,4 @@
-ARG ROS_DISTRO=dashing
+ARG ROS_DISTRO=foxy
 
 FROM ros:$ROS_DISTRO
 ARG CODENAME=bionic
@@ -75,7 +75,7 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
         curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
         apt-get install -y ./google-chrome-stable_current_amd64.deb && \
         rm google-chrome-stable_current_amd64.deb; \
-    fi 
+    fi
 
 
 # ===================== CLEAN UP ZONE ===================== #
@@ -97,7 +97,8 @@ RUN apt-get update \
     vulkan-utils \
   && apt-get clean
 
-ADD "https://gitlab.com/nvidia/container-images/vulkan/raw/master/nvidia_icd.json" /etc/vulkan/icd.d/nvidia_icd.json
+# Using nvidia_icd.json from 18.04 since it does not exist anymore in the master
+ADD "https://gitlab.com/nvidia/container-images/vulkan/-/raw/ubuntu18.04/nvidia_icd.json" /etc/vulkan/icd.d/nvidia_icd.json
 RUN chmod 644 /etc/vulkan/icd.d/nvidia_icd.json
 ADD "https://gitlab.com/nvidia/container-images/opengl/raw/ubuntu20.04/glvnd/runtime/10_nvidia.json" /etc/glvnd/egl_vendor.d/10_nvidia.json
 RUN chmod 644 /etc/glvnd/egl_vendor.d/10_nvidia.json
