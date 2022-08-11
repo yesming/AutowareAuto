@@ -103,6 +103,8 @@ bool8_t JoystickVehicleInterface::update_state_command(const sensor_msgs::msg::J
     if (idx < msg.buttons.size()) {
       if (1 == msg.buttons[idx]) {
         ret = handle_active_button(button_idx.first) || ret;
+      } else {
+        ret = handle_inactive_button(button_idx.first) || ret;
       }
     }
   }
@@ -111,6 +113,11 @@ bool8_t JoystickVehicleInterface::update_state_command(const sensor_msgs::msg::J
     m_state_command.horn = m_horn_on;
   }
   return ret;
+}
+
+bool8_t JoystickVehicleInterface::is_autonomous_mode_on()
+{
+  return m_autonomous;
 }
 
 bool8_t JoystickVehicleInterface::handle_active_button(Buttons button)
@@ -127,23 +134,38 @@ bool8_t JoystickVehicleInterface::handle_active_button(Buttons button)
       m_velocity -= VELOCITY_INCREMENT;
       break;
     case Buttons::AUTONOMOUS_TOGGLE:
-      m_state_command.mode = m_autonomous ? VSC::MODE_MANUAL : VSC::MODE_AUTONOMOUS;
-      m_autonomous = !m_autonomous;
+      if (!m_last_autonomous_button_val) {
+        m_autonomous = !m_autonomous;
+        m_last_autonomous_button_val = true;
+      }
+      m_state_command.mode = m_autonomous ? VSC::MODE_AUTONOMOUS : VSC::MODE_MANUAL;
       break;
     case Buttons::HEADLIGHTS_TOGGLE:
+      if (!m_last_headlight_button_val) {
+        m_headlights_on = !m_headlights_on;
+        m_last_headlight_button_val = true;
+      }
       m_state_command.headlight =
-        m_headlights_on ? HeadlightsCommand::DISABLE : HeadlightsCommand::ENABLE_LOW;
-      m_headlights_on = !m_headlights_on;
+        m_headlights_on ? HeadlightsCommand::ENABLE_LOW : HeadlightsCommand::DISABLE;
       break;
     case Buttons::WIPER_TOGGLE:
-      m_state_command.wiper = m_wipers_on ? WipersCommand::DISABLE : WipersCommand::ENABLE_LOW;
-      m_wipers_on = !m_wipers_on;
+      if (!m_last_wiper_button_val) {
+        m_wipers_on = !m_wipers_on;
+        m_last_wiper_button_val = true;
+      }
+      m_state_command.wiper = m_wipers_on ? WipersCommand::ENABLE_LOW : WipersCommand::DISABLE;
       break;
     case Buttons::HAND_BRAKE_TOGGLE:
-      m_hand_brake_on = !m_hand_brake_on;
+      if (!m_last_handbrake_button_val) {
+        m_hand_brake_on = !m_hand_brake_on;
+        m_last_handbrake_button_val = true;
+      }
       break;
     case Buttons::HORN_TOGGLE:
-      m_horn_on = !m_horn_on;
+      if (!m_last_horn_button_val) {
+        m_horn_on = !m_horn_on;
+        m_last_horn_button_val = true;
+      }
       break;
     case Buttons::GEAR_DRIVE:
       m_state_command.gear = VSC::GEAR_DRIVE;
@@ -185,6 +207,30 @@ bool8_t JoystickVehicleInterface::handle_active_button(Buttons button)
       throw std::logic_error{"Impossible button was pressed"};
   }
   return ret;
+}
+
+bool8_t JoystickVehicleInterface::handle_inactive_button(Buttons button)
+{
+  switch (button) {
+    case Buttons::AUTONOMOUS_TOGGLE:
+      m_last_autonomous_button_val = false;
+      break;
+    case Buttons::HEADLIGHTS_TOGGLE:
+      m_last_headlight_button_val = false;
+      break;
+    case Buttons::WIPER_TOGGLE:
+      m_last_wiper_button_val = false;
+      break;
+    case Buttons::HAND_BRAKE_TOGGLE:
+      m_last_handbrake_button_val = false;
+      break;
+    case Buttons::HORN_TOGGLE:
+      m_last_horn_button_val = false;
+      break;
+    default:
+      break;
+  }
+  return false;
 }
 
 void JoystickVehicleInterface::reset_recordplay()

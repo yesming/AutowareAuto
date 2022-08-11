@@ -41,7 +41,7 @@ autoware_set_compile_options(${PROJECT_NAME})
 
 autoware_set_compile_options(${PROJECT_NAME})
 rclcpp_components_register_node(${PROJECT_NAME}
-  PLUGIN "autoware::odom_to_state_conversion_nodes::OdomToStateConversionNode"
+  PLUGIN "odom_to_state_conversion_nodes::OdomToStateConversionNode"
   EXECUTABLE ${PROJECT_NAME}_exe
 )
 

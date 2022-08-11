@@ -24,7 +24,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     param_path = os.path.join(
-        get_package_share_directory('odom_to_state_conversion_node'),
+        get_package_share_directory('odom_to_state_conversion_nodes'),
         'param',
         'odom_to_state_conversion.param.yaml')
 

@@ -346,21 +346,14 @@ TEST_P(JoyViTest, BasicMapping)
     using VSC = autoware_auto_vehicle_msgs::msg::VehicleStateCommand;
     // Toggle buttons depend on state
     // Since joy message is always the same, these buttons can be in one of two states
-    const auto toggle_case1 =
-      (!button_check_fn(Buttons::HORN_TOGGLE) || state.msg_->horn) &&
-      (!button_check_fn(Buttons::HAND_BRAKE_TOGGLE) || state.msg_->hand_brake) &&
-      (button_check_fn(Buttons::AUTONOMOUS_TOGGLE) == (state.msg_->mode == VSC::MODE_AUTONOMOUS)) &&
+    const auto toggle_case =
+      (button_check_fn(Buttons::HORN_TOGGLE) == state.msg_->horn) &&
+      (button_check_fn(Buttons::HAND_BRAKE_TOGGLE) == state.msg_->hand_brake) &&
+      (button_check_fn(Buttons::AUTONOMOUS_TOGGLE) == (state.msg_->mode == VSC::MODE_MANUAL)) &&
       (button_check_fn(Buttons::HEADLIGHTS_TOGGLE) ==
       (state.msg_->headlight == HeadlightsCommand::ENABLE_LOW)) &&
       (button_check_fn(Buttons::WIPER_TOGGLE) == (state.msg_->wiper == WipersCommand::ENABLE_LOW));
-    const auto toggle_case2 =
-      (!button_check_fn(Buttons::HORN_TOGGLE) || !state.msg_->horn) &&
-      (!button_check_fn(Buttons::HAND_BRAKE_TOGGLE) || !state.msg_->hand_brake) &&
-      (button_check_fn(Buttons::AUTONOMOUS_TOGGLE) == (state.msg_->mode == VSC::MODE_MANUAL)) &&
-      (button_check_fn(Buttons::HEADLIGHTS_TOGGLE) ==
-      (state.msg_->headlight == HeadlightsCommand::DISABLE)) &&
-      (button_check_fn(Buttons::WIPER_TOGGLE) == (state.msg_->wiper == WipersCommand::DISABLE));
-    if (toggle_case1 || toggle_case2) {
+    if (toggle_case) {
       EXPECT_TRUE(true);  // Pushed logic into conditional for printing purposes
     } else {
       std::cerr << "Fail with toggle case:\n";
@@ -417,7 +410,7 @@ INSTANTIATE_TEST_CASE_P(
   {{Axes::THROTTLE, 0U}, {Axes::BRAKE, 1U}, {Axes::FRONT_STEER, 2U}},
   {{Axes::THROTTLE, -1.0F}, {Axes::BRAKE, 2.0F}, {Axes::FRONT_STEER, -3.0F}},
   {{Axes::THROTTLE, 2.0F}, {Axes::BRAKE, 5.0F}, {Axes::FRONT_STEER, -10.0F}},
-  {}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}}
 },
     // Basic control command
     JoyMapping{
@@ -425,7 +418,7 @@ INSTANTIATE_TEST_CASE_P(
   {{Axes::ACCELERATION, 3U}, {Axes::FRONT_STEER, 0U}, {Axes::REAR_STEER, 4U}},
   {{Axes::ACCELERATION, 12.0F}, {Axes::FRONT_STEER, -3.55F}, {Axes::REAR_STEER, 5.0F}},
   {{Axes::ACCELERATION, -1.1F}, {Axes::FRONT_STEER, 5.2F}, {Axes::REAR_STEER, -2.3F}},
-  {}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}}
 },
     // State
     JoyMapping{
@@ -442,7 +435,7 @@ INSTANTIATE_TEST_CASE_P(
   {{Axes::CURVATURE, 0U}},
   {{Axes::CURVATURE, 2.5F}},
   {{Axes::CURVATURE, 0.4F}},
-  {{Buttons::VELOCITY_UP, 0U}, {Buttons::VELOCITY_DOWN, 1U}}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}, {Buttons::VELOCITY_UP, 0U}, {Buttons::VELOCITY_DOWN, 1U}}
 },
     // RecordReplay
     JoyMapping{
@@ -450,21 +443,21 @@ INSTANTIATE_TEST_CASE_P(
   {},
   {},
   {},
-  {{Buttons::RECORDREPLAY_START_RECORD, 1U}}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}, {Buttons::RECORDREPLAY_START_RECORD, 1U}}
 },
     JoyMapping{
   PubType::Basic,
   {},
   {},
   {},
-  {{Buttons::RECORDREPLAY_START_REPLAY, 1U}}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}, {Buttons::RECORDREPLAY_START_REPLAY, 1U}}
 },
     JoyMapping {
   PubType::Basic,
   {},
   {},
   {},
-  {{Buttons::RECORDREPLAY_STOP, 1U}}
+  {{Buttons::AUTONOMOUS_TOGGLE, 0U}, {Buttons::RECORDREPLAY_STOP, 1U}}
 }
     // cppcheck-suppress syntaxError
   ), );

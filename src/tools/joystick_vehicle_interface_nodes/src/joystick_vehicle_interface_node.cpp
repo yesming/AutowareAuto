@@ -101,14 +101,26 @@ JoystickVehicleInterfaceNode::JoystickVehicleInterfaceNode(
     m_cmd_pub = create_publisher<HighLevelControl>(
       "high_level_command",
       rclcpp::QoS{10U}.reliable().durability_volatile());
+    m_auto_cmd_sub = create_subscription<HighLevelControl>(
+      "auto_high_level_command",
+      rclcpp::QoS{10U}.reliable().durability_volatile(),
+      [this](const HighLevelControl::SharedPtr msg) {on_auto_cmd<HighLevelControl>(msg);});
   } else if (control_command == "raw") {
     m_cmd_pub = create_publisher<RawControl>(
       "raw_command",
       rclcpp::QoS{10U}.reliable().durability_volatile());
+    m_auto_cmd_sub = create_subscription<RawControl>(
+      "auto_raw_command",
+      rclcpp::QoS{10U}.reliable().durability_volatile(),
+      [this](const RawControl::SharedPtr msg) {on_auto_cmd<RawControl>(msg);});
   } else if (control_command == "basic") {
     m_cmd_pub = create_publisher<BasicControl>(
       "basic_command",
       rclcpp::QoS{10U}.reliable().durability_volatile());
+    m_auto_cmd_sub = create_subscription<BasicControl>(
+      "auto_basic_command",
+      rclcpp::QoS{10U}.reliable().durability_volatile(),
+      [this](const BasicControl::SharedPtr msg) {on_auto_cmd<BasicControl>(msg);});
   } else {
     throw std::domain_error
           {"JoystickVehicleInterfaceNode does not support " + control_command +
@@ -156,6 +168,9 @@ void JoystickVehicleInterfaceNode::on_joy(const sensor_msgs::msg::Joy::SharedPtr
     m_state_cmd_pub->publish(state_command);
   }
   // Command publish
+  if (m_core->is_autonomous_mode_on()) {
+    return;
+  }
   const auto compute_publish_command = [this, &msg](auto && pub) -> void {
       using MessageT =
         typename std::decay_t<decltype(pub)>::element_type::MessageUniquePtr::element_type;

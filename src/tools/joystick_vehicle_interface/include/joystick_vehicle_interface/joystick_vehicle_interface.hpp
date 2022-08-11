@@ -113,10 +113,12 @@ public:
   const std_msgs::msg::UInt8 & get_recordreplay_command();
   void update_headlights_state(
     const autoware_auto_vehicle_msgs::msg::HeadlightsCommand & headlights_cmd);
+  bool8_t is_autonomous_mode_on();
 
 private:
   /// Given an active button, update the state command
   JOYSTICK_VEHICLE_INTERFACE_LOCAL bool8_t handle_active_button(Buttons button);
+  JOYSTICK_VEHICLE_INTERFACE_LOCAL bool8_t handle_inactive_button(Buttons button);
   /// Convert raw axis value with affine transform for type
   template<typename T>
   JOYSTICK_VEHICLE_INTERFACE_LOCAL void axis_value(
@@ -131,11 +133,16 @@ private:
   AxisScaleMap m_axis_scale_map{};
   AxisScaleMap m_axis_offset_map{};
   ButtonMap m_button_map{};
-  bool8_t m_autonomous{false};
+  bool8_t m_autonomous{true};
   bool8_t m_wipers_on{false};
   bool8_t m_headlights_on{false};
   bool8_t m_hand_brake_on{false};
   bool8_t m_horn_on{false};
+  bool8_t m_last_autonomous_button_val{false};
+  bool8_t m_last_wiper_button_val{false};
+  bool8_t m_last_headlight_button_val{false};
+  bool8_t m_last_handbrake_button_val{false};
+  bool8_t m_last_horn_button_val{false};
   decltype(HighLevelControl::velocity_mps) m_velocity{};
 
   VehicleStateCommand m_state_command{};

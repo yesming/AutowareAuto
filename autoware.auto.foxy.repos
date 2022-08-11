@@ -19,4 +19,11 @@ repositories:
     type: git
     url: https://github.com/lgsvl/PythonAPI.git
     version: 9bc29c9aee5e98d4d99e6a410c04b153b8f7feef
-
+  src/external/razor_imu_ros2:
+    type: git
+    url: https://github.com/airacingtech/razor-imu-ros2.git
+    version: foxy
+  src/external/laser_filters:
+    type: git
+    url: https://github.com/ros-perception/laser_filters.git
+    version: ros2

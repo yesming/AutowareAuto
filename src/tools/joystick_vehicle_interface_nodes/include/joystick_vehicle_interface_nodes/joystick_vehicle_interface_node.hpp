@@ -60,16 +60,39 @@ private:
 
   /// Callback for joystick subscription: compute control and state command and publish
   JOYSTICK_VEHICLE_INTERFACE_NODES_LOCAL void on_joy(const sensor_msgs::msg::Joy::SharedPtr msg);
+  template<typename T>
+  JOYSTICK_VEHICLE_INTERFACE_NODES_LOCAL void on_auto_cmd(const typename T::SharedPtr msg)
+  {
+    if (m_core->is_autonomous_mode_on()) {
+      const auto pub_ctr_cmd = [this, &msg](auto && pub) -> void {
+          using MessageT =
+            typename std::decay_t<decltype(pub)>::element_type::MessageUniquePtr::element_type::
+            SharedPtr;
+          auto cmd = **reinterpret_cast<const MessageT *>(&msg);
+          cmd.stamp = now();
+          pub->publish(cmd);
+        };
+      mpark::visit(pub_ctr_cmd, m_cmd_pub);
+    }
+  }
 
   using HighLevelControl = autoware_auto_control_msgs::msg::HighLevelControlCommand;
   using BasicControl = autoware_auto_vehicle_msgs::msg::VehicleControlCommand;
   using RawControl = autoware_auto_vehicle_msgs::msg::RawControlCommand;
   template<typename T>
   using PubT = typename rclcpp::Publisher<T>::SharedPtr;
+  template<typename T>
+  using SubT = typename rclcpp::Subscription<T>::SharedPtr;
 
   using ControlPub = mpark::variant<PubT<RawControl>, PubT<BasicControl>, PubT<HighLevelControl>>;
+  using ControlSub = mpark::variant<SubT<RawControl>, SubT<BasicControl>, SubT<HighLevelControl>>;
 
   ControlPub m_cmd_pub{};
+
+  // input autonomous cmd for switching manual/auto mode at a button press
+  // TODO(haoru): a seperate multiplexer will be developed in Autoware Universe
+  ControlSub m_auto_cmd_sub{};
+
   rclcpp::Publisher<autoware_auto_vehicle_msgs::msg::VehicleStateCommand>::SharedPtr m_state_cmd_pub
   {};
   rclcpp::Publisher<autoware_auto_vehicle_msgs::msg::HeadlightsCommand>::SharedPtr
