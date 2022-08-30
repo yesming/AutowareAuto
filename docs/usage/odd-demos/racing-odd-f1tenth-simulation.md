@@ -17,7 +17,7 @@ $ ade --rc .aderc-amd64-foxy-lgsvl start --update --enter
 ade$ /opt/lgsvl/simulator
 ```
 
-If you have never setup LGSVL before, please follow the instructions in @ref lgsvl page until the section called “Configure the cluster”.
+If you have never setup LGSVL before, please follow the instructions in [lgsvl.md](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/blob/master/docs/installation/lgsvl.md) until the section called “Configure the cluster”.
 
 ## Creating a simulation
 ### Choosing a map
