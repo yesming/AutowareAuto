@@ -15,8 +15,6 @@ Launch the simulator by
 
 ```{bash}
 $ cd ~/adehome/AutowareAuto
-
-# If you are using a joystick, add '-- --device /dev/input/js0'
 $ ade --rc .aderc-amd64-foxy-lgsvl start --update --enter
 
 ade$ /opt/lgsvl/simulator
