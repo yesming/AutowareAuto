@@ -1,8 +1,6 @@
 F1Tenth Demonstration {#f1tenth-demo-lgsvl}
 =================================================
 
-@tableofcontents
-
 # Setup Simulation {#f1tenth-simulation}
 
 This is a test for pipeline.
@@ -39,8 +37,6 @@ Adding a vehicle to your library:
 - Go to `Store` -> `Vehicles`.
 - Click `+` button next to `F1TenthCar` vehicle (you can use search bar to filter by name).
 
-@image html images/f1tenth-svl-vehicle.png `Adding a vehicle` width=50%
-
 ### Configure vehicle sensors
 
 Once you added vehicle to your library:
@@ -54,7 +50,8 @@ Create a new one and use the most recent version of sensor configuration file:
 
 In the configuration edit view:
 - Click `{...}` symbol near Visual Editor (preview) window.
-- Paste contents of [f1tenth_sensors.json](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/blob/f1tenth-devel/src/launch/f1tenth_launch/config/svl/f1tenth_sensors.json) file inside edit window. `Configurator` window should populate with bunch of sensors now.
+- Paste contents of [f1tenth_sensors.json](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/blob/master/src/launch/f1tenth_launch/config/svl/f1tenth-sensors.json) file inside edit window. `Configurator` window should populate with 
+bunch of sensors now.
 - Click `Save` to save configuration.
 
 @image html images/f1tenth-svl-sensors-json.png "Json configuration file" width=40%
@@ -77,7 +74,6 @@ You can visit [SVL documentation](https://www.svlsimulator.com/docs/user-interfa
 # F1Tenth RecordReplay Trajectory Demo
 
 ## Starting ade and setting up Autoware for F1Tenth
-F1Tenth is currently developed under the `f1tenth-devel` branch of Autoware.Auto. This step won’t be necessary once the [issue](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/issues/1317) is resolved.
 
 ```{bash}
 $ cd adehome/AutowareAuto
@@ -114,8 +110,6 @@ ade$ source AutowareAuto/install/setup.bash
 # press the right shoulder button to start driving.
 ade$ ros2 launch f1tenth_launch f1tenth_mapping_demo.launch.py
 ```
-
-@image html images/f1tenth-mapping.png "F1Tenth mapping file" width=40%
 
 In LGSVL, drive around the vehicle. Make sure to drive more than one complete lap for the mapping node to detect loop closure.
 
@@ -185,8 +179,6 @@ Set a intial pose with correct orientation in Rviz using `2D pose estimate`
 ade$ source /opt/AutowareAuto/setup.bash
 ade$ ros2 action send_goal /planning/replaytrajectory autoware_auto_planning_msgs/action/ReplayTrajectory "{replay_path: "/tmp/path"}" --feedback
 ```
-
-@image html images/f1tenth-replay-path.png "F1Tenth replay trajectory file" width=40%
 
 ## Known issues
 
