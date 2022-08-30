@@ -5,6 +5,8 @@ F1Tenth Demonstration {#f1tenth-demo-lgsvl}
 
 # Setup Simulation {#f1tenth-simulation}
 
+This is a test for pipeline.
+
 ## Launching the simulator
 Launch the simulator by
 
