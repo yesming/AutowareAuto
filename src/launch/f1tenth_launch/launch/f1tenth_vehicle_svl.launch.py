@@ -45,7 +45,7 @@ def generate_launch_description():
 
     with_joy_param = DeclareLaunchArgument(
         'with_joy',
-        default_value='True',
+        default_value='False',
         description='Launch joystick_interface in addition to other nodes'
     )
 
