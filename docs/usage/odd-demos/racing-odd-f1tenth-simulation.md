@@ -52,8 +52,6 @@ In the configuration edit view:
 bunch of sensors now.
 - Click `Save` to save configuration.
 
-@image html images/f1tenth-svl-sensors-json.png "Json configuration file" width=40%
-
 ### Choosing/creating a simulation
 
 The SVL simulator lets you store and reuse multiple simulation configurations. To use an existing simulation, navigate to `Simulations` tab and press the "Run Simulation" button for desired instance. The simulator should now start in the SVL window.
