@@ -80,7 +80,7 @@ $ ade --rc .aderc-amd64-foxy-lgsvl start --update --enter
 
 # build autoware
 ade$ cd AutowareAuto
-ade$ git checkout f1tenth-devel
+ade$ git checkout master
 ade$ vcs import . < autoware.auto.foxy.repos
 ade$ sudo apt update; rosdep update; rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -yr
 ade$ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
