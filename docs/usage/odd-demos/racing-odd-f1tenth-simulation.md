@@ -4,7 +4,7 @@ F1Tenth Demonstration {#f1tenth-demo-lgsvl}
 # Setup Simulation {#f1tenth-simulation}
 
 ## Setup Joystick Controller
-Plug in your Logitech wireless gamepad F710 controller receiver, and verify that device is connected by running
+Plug in your Logitech wireless gamepad F710 controller receiver, and verify that device is connected by
 
 ```{bash}
 $ ls /dev/input/js0
