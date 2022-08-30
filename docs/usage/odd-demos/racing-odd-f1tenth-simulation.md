@@ -3,7 +3,12 @@ F1Tenth Demonstration {#f1tenth-demo-lgsvl}
 
 # Setup Simulation {#f1tenth-simulation}
 
-This is a test for pipeline.
+## Setup Joystick Controller
+Plug in your Logitech wireless gamepad F710 controller receiver, and verify that device is connected by running
+
+```{bash}
+$ ls /dev/input/js0
+```
 
 ## Launching the simulator
 Launch the simulator by
