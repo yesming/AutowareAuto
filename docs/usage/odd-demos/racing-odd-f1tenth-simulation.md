@@ -27,8 +27,6 @@ Adding a map to your library:
 - Go to `Store` -> `Maps`.
 - Click `+` button next to `Red Bull Ring Racetrack` map (you can use search bar to filter by name).
 
-@image html images/f1tenth-svl-map.png "Choosing a map" width=50%
-
 ### Configuring a vehicle {#f1tenth-lgsvl-configuring-vehicle}
 
 The goal is to add `F1TenthCar` vehicle to your library. If this vehicle is already in your library then nothing needs to be done.
