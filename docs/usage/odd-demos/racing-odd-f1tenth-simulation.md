@@ -152,7 +152,9 @@ Set a intial pose with correct orientation in Rviz using `2D pose estimate`
 ```{bash}
 # (Terminal 2)
 ade$ source /opt/AutowareAuto/setup.bash
-ade$ ros2 action send_goal /planning/recordtrajectory autoware_auto_planning_msgs/action/RecordTrajectory "{record_path: "/tmp/path"}" --feedback
+
+ade$ mkdir ${HOME}/path
+ade$ ros2 action send_goal /planning/recordtrajectory autoware_auto_planning_msgs/action/RecordTrajectory "{record_path: "path/saved_path"}" --feedback
 ```
 In LGSVL, drive around the vehicle and stop recording with Ctrl + C in terminal where `f1tenth_recordreplay_demo.launch.py` was launched.
 
