@@ -175,11 +175,11 @@ Set a intial pose with correct orientation in Rviz using `2D pose estimate`
 ```{bash}
 (Terminal 2)
 ade$ source /opt/AutowareAuto/setup.bash
-ade$ ros2 action send_goal /planning/replaytrajectory autoware_auto_planning_msgs/action/ReplayTrajectory "{replay_path: "/tmp/path"}" --feedback
+ade$ ros2 action send_goal /planning/replaytrajectory autoware_auto_planning_msgs/action/ReplayTrajectory "{replay_path: "path/saved_path"}" --feedback
 ```
 
 ## Known issues
 
 1. The replayed velocity might not be exactly the same with the recorded one. This is due to limitation of `Pure Pursuit` algorithm. The implementation does not take delay and external force into consideration, which means that it assumes constant speed when acceleration is released even if break is not pressed. This causes velocity of the vehicle to be wrong. Improvements will be made in the future.
 
-2. The connection between the SVL Simulator local machine and remote server may be unstable, causing the Lidar data to be lost and 2D Pose Estimate to fail. If that occurs, restart the SVL Simulator and try again.
+2. The connection between the SVL Simulator local machine and remote server may be unstable, causing the ROS2 message to be lost and 2D Pose Estimate to fail. If that occurs, restart the SVL Simulator and try again.
