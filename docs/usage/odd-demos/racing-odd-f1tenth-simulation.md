@@ -178,4 +178,6 @@ ade$ ros2 action send_goal /planning/replaytrajectory autoware_auto_planning_msg
 
 ## Known issues
 
-The replayed velocity might not be exactly the same with the recorded one. This is due to limitation of `Pure Pursuit` algorithm. The implementation does not take delay and external force into consideration, which means that it assumes constant speed when acceleration is released even if break is not pressed. This causes velocity of the vehicle to be wrong. Improvements will be made in the future.
+1. The replayed velocity might not be exactly the same with the recorded one. This is due to limitation of `Pure Pursuit` algorithm. The implementation does not take delay and external force into consideration, which means that it assumes constant speed when acceleration is released even if break is not pressed. This causes velocity of the vehicle to be wrong. Improvements will be made in the future.
+
+2. The connection between the SVL Simulator local machine and remote server may be unstable, causing the Lidar data to be lost and 2D Pose Estimate to fail. If that occurs, restart the SVL Simulator and try again.
